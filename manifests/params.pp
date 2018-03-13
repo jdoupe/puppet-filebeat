@@ -20,6 +20,7 @@ class filebeat::params {
   $fields               = {}
   $fields_under_root    = false
   $outputs              = {}
+  $queue                = {}
   $shipper              = {}
   $logging              = {}
   $run_options          = {}
@@ -35,20 +36,25 @@ class filebeat::params {
   # }
   #
 
-  # Archlinux has a proper package in the official repos
-  # we shouldn't manage the repo on it
-  case $facts['os']['family'] {
-    'Archlinux': {
-      $manage_repo = false
-      $filebeat_path = '/usr/bin/filebeat'
-      $major_version = '6'
-    }
-    default: {
-      $manage_repo = true
-      $filebeat_path = '/usr/share/filebeat/bin/filebeat'
-      $major_version = '5'
-    }
-  }
+  ## Archlinux has a proper package in the official repos
+  ## we shouldn't manage the repo on it
+  #case $facts['os']['family'] {
+  #  'Archlinux': {
+  #    $manage_repo = false
+  #    $filebeat_path = '/usr/bin/filebeat'
+  #    $major_version = '6'
+  #  }
+  #  default: {
+  #    $manage_repo = true
+  #    $filebeat_path = '/usr/share/filebeat/bin/filebeat'
+  #    $major_version = '5'
+  #  }
+  #}
+
+  $manage_repo = true
+  $filebeat_path = '/usr/bin/filebeat'
+  $major_version = '6'
+  
   case $::kernel {
     'Linux'   : {
       $package_ensure    = present
